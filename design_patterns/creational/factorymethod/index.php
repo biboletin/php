@@ -4,3 +4,6 @@
 include "interviewer.php";
 include "developer.php";
 include "community_executive.php";
+include "hiring_manager.php";
+include "development_manager.php";
+include "marketing_manager.php";
