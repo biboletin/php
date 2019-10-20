@@ -2,5 +2,5 @@
 
 interface Interviewer
 {
-
+    public function askQuestions();
 }
