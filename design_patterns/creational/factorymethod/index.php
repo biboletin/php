@@ -8,6 +8,8 @@ include "hiring_manager.php";
 include "development_manager.php";
 include "marketing_manager.php";
 
-
 $devManager = new DevelopmentManager();
 $devManager->takeInterview();
+echo "<br/>";
+$marketingManager = new MarketingManager();
+$marketingManager->takeInterview();
