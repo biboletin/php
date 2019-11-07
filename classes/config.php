@@ -13,14 +13,14 @@ class Config
         ],
     ];
 
-    public static function get($value)
+    public static function get($key, $value)
     {
-        foreach (self::$config as $props => $values) {
-            if (is_array($values)) {
-                foreach ($values as $prop => $value) {
-                    echo $prop . ': ' . $value . '<br/>';
-                }
-            }
+        if (!isset(self::$config[$key])) {
+            return "";
         }
+        if (!isset(self::$config[$key][$value])) {
+            return "";
+        }
+        return self::$config[$key][$value];
     }
 }

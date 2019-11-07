@@ -5,7 +5,6 @@ class HTMLElement
 
     public function __construct(HTMLInput $input)
     {
-
     }
 }
 
