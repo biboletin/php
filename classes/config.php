@@ -7,8 +7,8 @@ class Config
         "mysql" => [
             "host" => "127.0.0.1",
             "user" => "root",
-            "password" => "",
-            "database" => "",
+            "password" => "pass",
+            "database" => "db_name",
             "port" => 3306,
         ],
     ];

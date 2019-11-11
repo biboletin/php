@@ -4,31 +4,53 @@ namespace Biboletin;
 
 class Filter
 {
-    public static function validate($data)
+    public function sanitizeInput($data, $flag = ENT_COMPAT, $encoding = "utf-8")
     {
         if (!is_array($data)) {
-            $str = strip_tags(trim(self::toUTF($data)));
-
-            $result = htmlspecialchars($str, ENT_QUOTES, "UTF-8");
+            return htmlspecialchars(trim($data), $flag, $encoding);
         }
-
-        if (is_array($data) || is_object($data)) {
-            $result = [];
-            foreach ($data as $key => $value) {
-                if (is_array($value) || is_object($value)) {
-                    $result[$key] = self::validate($value);
-                } else {
-                    $str = strip_tags(trim(self::toUTF($value)));
-                    $result[$key] = htmlspecialchars($str, ENT_QUOTES, "UTF-8");
-                }
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                return $this->sanitizeInput($value);
             }
+            $data[$key] = htmlspecialchars(trim($value), $flag, $encoding);
         }
-        return $result;
+        return $data;
     }
 
-    private static function toUTF($str)
+    public function sanitizeOutput($data, $flag = ENT_COMPAT, $encoding = "utf-8")
     {
-        return mb_convert_encoding($str, "utf-8", mb_detect_encoding($str, "auto"));
-        // return $str;
+        if (!is_array($data)) {
+            return htmlspecialchars_decode(trim($data));
+        }
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                return $this->sanitizeOutput($value);
+            }
+            $data[$key] = htmlspecialchars_decode(trim($value));
+        }
+        return $data;
+    }
+
+    public function toUTF($data)
+    {
+        if (!is_array($data)) {
+            return mb_convert_encoding(
+                $data,
+                "utf-8",
+                mb_detect_encoding($data, "auto")
+            );
+        }
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                return $this->toUTF($value);
+            }
+            $data[$key] = mb_convert_encoding(
+                $value,
+                "utf-8",
+                mb_detect_encoding($value, "auto")
+            );
+        }
+        return $data;
     }
 }

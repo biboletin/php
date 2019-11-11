@@ -4,85 +4,67 @@ namespace Biboletin;
 
 use Exception;
 
-class Hash
+class StringHasher
 {
-    // private static $init;
-    private static $salt;
-    private static $algorithm;
-    private static $default = false;
+    private $salt;
+    private $algorithm;
 
-/*
-private function __construct(){
-if(self::$default){
-self::$salt = md5("hash");
-self::$algorithm = "sha1";
-}
-}
- */
-    public static function hash($stringForHash)
+    public function __construct($hashAlgorithm, $salt = null)
     {
-        $hash;
-
-        if (self::$algorithm === 'md5') {
-            $hash = md5($stringForHash);
-            return $hash;
+        $this->algorithm = 'md5';
+        if ($hashAlgorithm !== "") {
+            $this->algorithm = $hashAlgorithm;
         }
-
-        if (self::$algorithm == 'crypt') {
-            $hash = crypt($stringForHash, self::$salt);
-            return $hash;
-        }
-
-        return $hash;
-    }
-    public static function check($unhashed, $hashed)
-    {
-        if (self::$algorithm === 'md5') {
-            return md5(trim($unhashed)) === $hashed;
-        }
-
-        if (self::$algorithm === 'crypt') {
-            return hash_equals($hashed, crypt($unhashed, $hashed));
-        }
+        $this->salt = $salt;
     }
 
-    public static function setAlgorithm($algo = null)
+    public function hashit($stringForHash)
     {
-        $algorithm = strtolower($algo);
+        $hash = $stringForHash . $this->salt;
 
-        if (empty($algorithm) || ($algorithm === null)) {
-            throw new Exception(__METHOD__ . ": missing or empty argument's!");
+        if ($this->algorithm === 'md5') {
+            return md5($hash);
         }
 
-        if ($algorithm == 'bcrypt') {
-            self::$algorithm = strip_tags(trim($algorithm));
+        if ($this->algorithm == 'crypt') {
+            return crypt($hash);
         }
-
-        if ($algorithm == 'crypt') {
-            self::$algorithm = strip_tags(trim($algorithm));
-        }
-
-        if (in_array($algorithm, hash_algos())) {
-            self::$algorithm = strip_tags(trim($algorithm));
-        }
+        return hash($this->algorithm, $hash);
     }
 
-    public static function getAlgorithm()
+    public function check($unhashed, $hashed)
     {
-        return strtoupper(self::$algorithm);
-    }
-
-    public static function setSalt($salt = null)
-    {
-        $salt = trim($salt);
-        if (empty($salt) || ($salt === null)) {
-            throw new Exception(__METHOD__ . ": missing or empty argument's!");
+        if ($this->algorithm === 'md5') {
+            return (bool) (md5(trim($unhashed)) === $hashed);
         }
-
-        self::$salt = $salt;
+        if ($this->algorithm === 'crypt') {
+            return (bool) (hash_equals($hashed, crypt($unhashed, $hashed)));
+        }
+        return (bool) (hash($this->algorithm, $unhashed) === $hashed);
     }
-    public static function getSalt()
+
+    public function setAlgorithm($algo = null)
     {
-        return self::$salt;
+        $this->algorithm = strip_tags(trim($algo));
+    }
+
+    public function getAlgorithm()
+    {
+        return strtoupper($this->algorithm);
+    }
+
+    public function setSalt($salt = null)
+    {
+        $this->salt = $salt;
+    }
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    public function __destruct()
+    {
+        $this->salt = null;
+        $this->algorithm = null;
     }
 }
