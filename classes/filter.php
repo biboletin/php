@@ -27,7 +27,7 @@ class Filter
             if (is_array($value)) {
                 return $this->sanitizeOutput($value);
             }
-			$data[$key] = htmlspecialchars_decode(trim($value));
+            $data[$key] = htmlspecialchars_decode(trim($value));
         }
         return $data;
     }
@@ -36,20 +36,20 @@ class Filter
     {
         if (!is_array($data)) {
             return mb_convert_encoding(
-				$data, 
-				"utf-8", 
-				mb_detect_encoding($data, "auto")
-			);
+                $data,
+                "utf-8",
+                mb_detect_encoding($data, "auto")
+            );
         }
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 return $this->toUTF($value);
             }
-			$data[$key] = mb_convert_encoding(
-				$value, 
-				"utf-8", 
-				mb_detect_encoding($value, "auto")
-			);
+            $data[$key] = mb_convert_encoding(
+                $value,
+                "utf-8",
+                mb_detect_encoding($value, "auto")
+            );
         }
         return $data;
     }
