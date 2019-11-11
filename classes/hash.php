@@ -11,15 +11,7 @@ class Hash
     private static $algorithm;
     private static $default = false;
 
-/*
-private function __construct(){
-if(self::$default){
-self::$salt = md5("hash");
-self::$algorithm = "sha1";
-}
-}
- */
-    public static function hash($stringForHash)
+    public static function hashit($stringForHash)
     {
         $hash;
 
