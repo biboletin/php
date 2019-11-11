@@ -7,3 +7,6 @@ include 'token.php';
 include 'filter.php';
 include 'config.php';
 include 'htmlElement.php';
+
+use Biboletin\Session;
+
