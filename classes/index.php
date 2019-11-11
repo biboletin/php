@@ -13,4 +13,4 @@ include 'filter.php';
 include 'config.php';
 use Biboletin\Config;
 
-Config::get("mysql/user");
+echo Config::get("mysql", "user");

@@ -4,7 +4,6 @@
  */
 namespace Biboletin;
 
-use Exception;
 use DateTime;
 
 /**
@@ -20,12 +19,12 @@ class Cookie
     private static $cookieSecured = false;
     private static $cookieHttpOnly = false;
     // private static $useDefaults = false;
-/**
- * Undocumented function
- *
- * @param [type] $name
- * @return void
- */
+    /**
+     * Undocumented function
+     *
+     * @param [type] $name
+     * @return void
+     */
     public static function setName($name)
     {
         self::$cookieName = strip_tags(trim($name));
@@ -75,7 +74,7 @@ class Cookie
  */
     public static function setPath($path)
     {
-        if (!empty($domain)) {
+        if (!empty($path)) {
             self::$cookiePath = strip_tags(trim($path));
         } else {
             self::$cookiePath = '/';
